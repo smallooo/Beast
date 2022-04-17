@@ -27,6 +27,11 @@ private val LightColorPalette = lightColors(
     */
 )
 
+enum class ColorPallet {
+    PURPLE, GREEN, ORANGE, BLUE, WALLPAPER
+}
+
+
 @Composable
 fun BeastTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
