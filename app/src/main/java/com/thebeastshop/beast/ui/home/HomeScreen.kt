@@ -177,15 +177,7 @@ fun PalletMenu(
             MenuItem(green500, "Green") {
                 onPalletChange.invoke(ColorPallet.GREEN)
             }
-            MenuItem(purple, "Purple") {
-                onPalletChange.invoke(ColorPallet.PURPLE)
-            }
-            MenuItem(orange500, "Orange") {
-                onPalletChange.invoke(ColorPallet.ORANGE)
-            }
-            MenuItem(blue500, "Blue") {
-                onPalletChange.invoke(ColorPallet.BLUE)
-            }
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 MenuItem(dynamicLightColorScheme(LocalContext.current).primary, "Dynamic") {
                     onPalletChange.invoke(ColorPallet.WALLPAPER)

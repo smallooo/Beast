@@ -12,9 +12,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -34,10 +31,11 @@ import com.thebeastshop.beast.ui.theme.*
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.thebeastshop.beast.theme.LoginBackground
 import com.thebeastshop.beast.ui.category.CategoryScreen
 import com.thebeastshop.beast.ui.home.HomeScreen
 import com.thebeastshop.beast.ui.home.PalletMenu
@@ -55,7 +53,7 @@ class MainActivity : ComponentActivity() {
                 val systemUiController = remember { SystemUiController(window) }
                 val appTheme = remember { mutableStateOf(AppThemeState()) }
                 BaseView(appTheme.value, systemUiController) {
-                    MainAppContent(appTheme)
+                    MainAppContent(appTheme,systemUiController)
                 }
             }
         }
@@ -67,8 +65,10 @@ class MainActivity : ComponentActivity() {
     ExperimentalFoundationApi::class,
     ExperimentalMaterialApi::class)
 @Composable
-fun MainAppContent(appThemeState: MutableState<AppThemeState>) {
-    //Default home screen state is always HOME
+fun MainAppContent(
+    appThemeState: MutableState<AppThemeState>,
+    systemUiController: SystemUiController
+) {
     val homeScreenState = rememberSaveable { mutableStateOf(BottomNavType.HOME) }
     val bottomNavBarContentDescription = stringResource(id = R.string.a11y_bottom_navigation_bar)
     val chooseColorBottomModalState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -77,7 +77,6 @@ fun MainAppContent(appThemeState: MutableState<AppThemeState>) {
     ModalBottomSheetLayout(
         sheetState = chooseColorBottomModalState,
         sheetContent = {
-            //Modal used only when user use talkback for the sake of accessibility
             PalletMenu(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) { newPalletSelected ->
@@ -102,7 +101,8 @@ fun MainAppContent(appThemeState: MutableState<AppThemeState>) {
                     modifier = Modifier
                         .semantics { contentDescription = bottomNavBarContentDescription }
                         .testTag(TestTags.BOTTOM_NAV_TEST_TAG),
-                    homeScreenState = homeScreenState
+                    homeScreenState = homeScreenState,
+                    systemUiController
                 )
             }
         } else {
@@ -215,7 +215,8 @@ private fun NavigationRailContent(
 @Composable
 fun BottomNavigationContent(
     modifier: Modifier = Modifier,
-    homeScreenState: MutableState<BottomNavType>
+    homeScreenState: MutableState<BottomNavType>,
+    systemUiController: SystemUiController
 ) {
     var animate by remember { mutableStateOf(false) }
     NavigationBar(
@@ -287,6 +288,7 @@ fun BottomNavigationContent(
             onClick = {
                 homeScreenState.value = BottomNavType.TEMPLATE
                 animate = false
+                systemUiController.setStatusBarColor(color = LoginBackground, darkIcons = false)
             },
             label = {
                 androidx.compose.material3.Text(
@@ -317,7 +319,11 @@ fun HomeScreenContent(
                     BottomNavType.WIDGETS -> CategoryScreen(appThemeState.value.darkTheme)
                     BottomNavType.ANIMATION -> SocialScreen(appThemeState.value.darkTheme)
                     BottomNavType.DEMOUI -> ShopsScreen(appThemeState.value.darkTheme)
-                    BottomNavType.TEMPLATE -> MyScreen(appThemeState.value.darkTheme)
+                    BottomNavType.TEMPLATE ->
+                    {
+                        MyScreen(appThemeState.value.darkTheme)
+
+                    }
                 }
             }
         }
@@ -341,12 +347,9 @@ fun BaseView(
         darkTheme = appThemeState.darkTheme,
         colorPallet = appThemeState.pallet
     ) {
-//        systemUiController?.setStatusBarColor(color = MaterialTheme.colorScheme.onPrimaryContainer, darkIcons = appThemeState.darkTheme)
         content()
     }
 }
-
-
 
 @Composable
 fun Greeting(name: String) {

@@ -13,4 +13,7 @@
     <color name="green_500">#ff4caf50</color>
     <color name="green_700">#ff388e3c</color>
     <color name="purple">#FF833AB4</color>
+
+
+    <color name="login_background">#FFC7BEB7</color>
 </resources>
