@@ -80,8 +80,6 @@ fun HomeScreen(
         },
         content = {
             HomeScreenContent(appThemeState.value.darkTheme, showMenu) { newPalletSelected ->
-                // Events can be and should be passed to as upper layer as possible here
-                // we are just passing to till HomeScreen.
                 appThemeState.value = appThemeState.value.copy(pallet = newPalletSelected)
                 showMenu.value = false
             }

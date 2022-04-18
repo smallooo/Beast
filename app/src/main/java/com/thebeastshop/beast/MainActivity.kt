@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -34,10 +35,15 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.thebeastshop.beast.ui.category.CategoryScreen
 import com.thebeastshop.beast.ui.home.HomeScreen
 import com.thebeastshop.beast.ui.home.PalletMenu
+import com.thebeastshop.beast.ui.my.MyScreen
+import com.thebeastshop.beast.ui.shops.ShopsScreen
+import com.thebeastshop.beast.ui.social.SocialScreen
 import com.thebeastshop.beast.utils.TestTags
 
 class MainActivity : ComponentActivity() {
@@ -116,9 +122,7 @@ fun MainAppContent(appThemeState: MutableState<AppThemeState>) {
             }
         }
     }
-
 }
-
 
 @Composable
 private fun NavigationRailContent(
@@ -204,13 +208,9 @@ private fun NavigationRailContent(
                 )
             },
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
-
         )
     }
 }
-
-
-
 
 @Composable
 fun BottomNavigationContent(
@@ -222,7 +222,7 @@ fun BottomNavigationContent(
         modifier = modifier,
     ) {
         NavigationBarItem(
-            icon = {},
+            icon = { Icon(painter = painterResource(R.drawable.icon_tabhost_home_normal), contentDescription = "") },
             selected = homeScreenState.value == BottomNavType.HOME,
             onClick = {
                 homeScreenState.value = BottomNavType.HOME
@@ -237,7 +237,7 @@ fun BottomNavigationContent(
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_HOME_TEST_TAG)
         )
         NavigationBarItem(
-            icon = {},
+            icon = {Icon(painter = painterResource(R.drawable.icon_tabhost_category_normal), contentDescription = "")},
             selected = homeScreenState.value == BottomNavType.WIDGETS,
             onClick = {
                 homeScreenState.value = BottomNavType.WIDGETS
@@ -252,7 +252,7 @@ fun BottomNavigationContent(
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_WIDGETS_TEST_TAG)
         )
         NavigationBarItem(
-            icon = {},
+            icon = {Icon(painter = painterResource(R.drawable.icon_tabhost_content_normal), contentDescription = "")},
             selected = homeScreenState.value == BottomNavType.ANIMATION,
             onClick = {
                 homeScreenState.value = BottomNavType.ANIMATION
@@ -265,10 +265,9 @@ fun BottomNavigationContent(
                 )
             },
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_ANIM_TEST_TAG)
-
         )
         NavigationBarItem(
-            icon = {},
+            icon = {Icon(painter = painterResource(R.drawable.icon_tabhost_store_normal), contentDescription = "")},
             selected = homeScreenState.value == BottomNavType.DEMOUI,
             onClick = {
                 homeScreenState.value = BottomNavType.DEMOUI
@@ -283,7 +282,7 @@ fun BottomNavigationContent(
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_DEMO_UI_TEST_TAG)
         )
         NavigationBarItem(
-            icon = {},
+            icon = {Icon(painter = painterResource(R.drawable.icon_tabhost_account_normal), contentDescription = "")},
             selected = homeScreenState.value == BottomNavType.TEMPLATE,
             onClick = {
                 homeScreenState.value = BottomNavType.TEMPLATE
@@ -296,7 +295,6 @@ fun BottomNavigationContent(
                 )
             },
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
-
         )
     }
 }
@@ -316,18 +314,15 @@ fun HomeScreenContent(
             androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background) {
                 when (screen) {
                     BottomNavType.HOME -> HomeScreen(appThemeState, chooseColorBottomModalState)
-//                    BottomNavType.WIDGETS -> WidgetScreen()
-//                    BottomNavType.ANIMATION -> AnimationScreen()
-//                    BottomNavType.DEMOUI -> DemoUIList()
-//                    BottomNavType.TEMPLATE -> TemplateScreen(appThemeState.value.darkTheme)
-
+                    BottomNavType.WIDGETS -> CategoryScreen(appThemeState.value.darkTheme)
+                    BottomNavType.ANIMATION -> SocialScreen(appThemeState.value.darkTheme)
+                    BottomNavType.DEMOUI -> ShopsScreen(appThemeState.value.darkTheme)
+                    BottomNavType.TEMPLATE -> MyScreen(appThemeState.value.darkTheme)
                 }
             }
         }
     }
 }
-
-
 
 @Composable
 fun BaseView(
@@ -339,7 +334,7 @@ fun BaseView(
         ColorPallet.GREEN -> green700
         ColorPallet.BLUE -> blue700
         ColorPallet.ORANGE -> orange700
-        ColorPallet.PURPLE -> Purple700
+        ColorPallet.PURPLE -> purple700
         else -> green700
     }
     ComposeCookBookMaterial3Theme(
