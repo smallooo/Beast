@@ -1,6 +1,5 @@
 package com.thebeastshop.beast.ui.my
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,14 +34,18 @@ fun MyScreen(darkTheme: Boolean) {
     val context = LocalContext.current
     val backgroundColor = MaterialTheme.colorScheme.background.copy(alpha = 0.7f)
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(320.dp)
-        .background(color = LoginBackground)) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(320.dp)
+            .background(color = LoginBackground)
+    ) {
         if (true) {
             Column() {
-                Row(Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End){
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
                     val imageModifierSetting = Modifier
                         .height(30.dp)
                         .width(30.dp)
@@ -70,15 +73,12 @@ fun MyScreen(darkTheme: Boolean) {
                     )
                 }
 
-
-
                 Box() {
                     val imageModifier = Modifier
                         .height(300.dp)
                         .fillMaxWidth()
                         .padding(30.dp, 20.dp, 30.dp, 0.dp)
                         .clip(RoundedCornerShape(8.dp))
-
 
                     Image(
                         painter = painterResource(com.thebeastshop.beast.R.drawable.bg_account_index_top_view),
@@ -88,7 +88,7 @@ fun MyScreen(darkTheme: Boolean) {
                     )
 
                     val imageModifier1 = Modifier
-                            .height(15.dp)
+                        .height(15.dp)
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
 
@@ -98,14 +98,8 @@ fun MyScreen(darkTheme: Boolean) {
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
-
-
                 }
-
-
-                }
-        } else {
-
+            }
         }
     }
 }

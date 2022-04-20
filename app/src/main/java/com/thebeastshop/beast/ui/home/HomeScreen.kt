@@ -18,10 +18,7 @@ import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
-
 import  androidx.compose.material.icons.filled.Face
-
-
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.*
@@ -38,26 +35,32 @@ import androidx.compose.ui.unit.dp
 import com.thebeastshop.beast.R
 import com.thebeastshop.beast.data.DemoDataProvider
 import com.thebeastshop.beast.data.model.HomeScreenItems
+import com.thebeastshop.beast.data.preference.UserRepo
 import com.thebeastshop.beast.theme.AppThemeState
 import com.thebeastshop.beast.theme.Material3Card
-import com.thebeastshop.beast.ui.home.lists.ListViewActivity
 import com.thebeastshop.beast.ui.theme.*
 import com.thebeastshop.beast.utils.TestTags
+import com.thebeastshop.beast.data.dataStore
+import com.thebeastshop.beast.data.preference.UserRepoImpl
+import kotlinx.coroutines.*
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import java.util.*
-
-
-@OptIn(ExperimentalMaterialApi::class, androidx.compose.material3.ExperimentalMaterial3Api::class,
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class,
     ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     appThemeState: MutableState<AppThemeState>,
-    chooseColorBottomModalState: ModalBottomSheetState
+    chooseColorBottomModalState: ModalBottomSheetState,
+
 ) {
     val showMenu = remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
+
+    val userRepo : UserRepo?=null
+    val isLoggedIn = remember {
+        GlobalScope.launch(Dispatchers.IO) {
+            userRepo?.saveUserLoggedInState(true)
+        }
+    }
 
     Scaffold(
         modifier = Modifier.testTag(TestTags.HOME_SCREEN_ROOT),
@@ -244,63 +247,24 @@ fun HomeScreenListView(
     }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 fun homeItemClicked(homeScreenItems: HomeScreenItems, context: Context, isDarkTheme: Boolean) {
-    //TODO pass theme to following screens
-//    val intent = when (homeScreenItems) {
-//        is HomeScreenItems.ListView -> {
-//            ListViewActivity.newIntent(
-//                context,
-//                homeScreenItems.type.uppercase(Locale.getDefault()), isDarkTheme
-//            )
-//        }
-//        HomeScreenItems.Dialogs -> {
-//            DialogsActivity.newIntent(context, isDarkTheme)
-//        }
-//        HomeScreenItems.TabLayout -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.TABS.name, isDarkTheme)
-//        }
-//        HomeScreenItems.Carousel -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.CAROUSELL.name, isDarkTheme)
-//        }
-//        HomeScreenItems.ConstraintsLayout -> {
-//            DynamicUIActivity.newIntent(
-//                context,
-//                DynamicUiType.CONSTRAINTLAYOUT.name,
-//                isDarkTheme
-//            )
-//        }
-//        HomeScreenItems.CollapsingAppBar -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.TABS.name, isDarkTheme)
-//        }
-//        HomeScreenItems.BottomAppBar -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.TABS.name, isDarkTheme)
-//        }
-//        HomeScreenItems.BottomSheets -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.BOTTOMSHEET.name, isDarkTheme)
-//        }
-//        HomeScreenItems.Layouts -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.LAYOUTS.name, isDarkTheme)
-//        }
-//        HomeScreenItems.Modifiers -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.MODIFIERS.name, isDarkTheme)
-//        }
-//        HomeScreenItems.AndroidViews -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.ANDROIDVIEWS.name, isDarkTheme)
-//        }
-//        HomeScreenItems.AdvanceLists -> {
-//            AdvanceListsActivity.newIntent(context, isDarkTheme)
-//        }
-//        HomeScreenItems.PullRefresh -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.PULLRERESH.name, isDarkTheme)
-//        }
-//        HomeScreenItems.CustomFling -> {
-//            FlingListActivity.newIntent(context = context, isDarkTheme = isDarkTheme)
-//        }
-//        HomeScreenItems.MotionLayout -> {
-//            DynamicUIActivity.newIntent(context, DynamicUiType.MOTIONLAYOUT.name, isDarkTheme)
-//        }
+    val userRepo = UserRepoImpl(   context.dataStore )
+    GlobalScope.launch ( Dispatchers.IO ){
+        userRepo.getUserLoggedInState().collect { state ->
+            withContext(Dispatchers.Main) {
+            }
+        }
+    }
+
+    GlobalScope.launch ( Dispatchers.IO ){
+        userRepo.saveUserLoggedInState(false)
+    }
+//    lifecycleScope.launch {
+//        userRepo?.saveUserLoggedInState(true)
+//
 //    }
-//    context.startActivity(intent)
+
 }
 
 @OptIn(ExperimentalMaterialApi::class,
@@ -311,8 +275,6 @@ fun PreviewHomeScreen() {
     val state = remember {
         mutableStateOf(AppThemeState(false, ColorPallet.GREEN))
     }
-    val chooseColorBottomModalState =
-        rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
-
+    val chooseColorBottomModalState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     HomeScreen(state, chooseColorBottomModalState)
 }

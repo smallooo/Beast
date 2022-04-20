@@ -1,4 +1,4 @@
-package com.thebeastshop.beast
+package com.thebeastshop.beast.navigation
 
 enum class BottomNavType {
     HOME,
