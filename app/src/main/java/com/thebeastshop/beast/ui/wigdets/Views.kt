@@ -58,6 +58,7 @@ fun BaseView(
         darkTheme = appThemeState.darkTheme,
         colorPallet = appThemeState.pallet
     ) {
+        systemUiController?.setStatusBarColor(color = MaterialTheme.colorScheme.onPrimaryContainer, darkIcons = appThemeState.darkTheme)
         content()
     }
 }
@@ -69,7 +70,6 @@ fun BaseView(
 @Composable
 fun MainAppContent(
     appThemeState: MutableState<AppThemeState>,
-    systemUiController: SystemUiController
 ) {
     val homeScreenState = rememberSaveable { mutableStateOf(BottomNavType.HOME) }
     val bottomNavBarContentDescription = stringResource(id = com.thebeastshop.beast.R.string.a11y_bottom_navigation_bar)
@@ -104,7 +104,7 @@ fun MainAppContent(
                         .semantics { contentDescription = bottomNavBarContentDescription }
                         .testTag(TestTags.BOTTOM_NAV_TEST_TAG),
                     homeScreenState = homeScreenState,
-                    systemUiController
+
                 )
             }
         } else {
@@ -218,8 +218,7 @@ private fun NavigationRailContent(
 @Composable
 fun BottomNavigationContent(
     modifier: Modifier = Modifier,
-    homeScreenState: MutableState<BottomNavType>,
-    systemUiController: SystemUiController
+    homeScreenState: MutableState<BottomNavType>
 ) {
     var animate by remember { mutableStateOf(false) }
     NavigationBar(
@@ -291,7 +290,7 @@ fun BottomNavigationContent(
             onClick = {
                 homeScreenState.value = BottomNavType.TEMPLATE
                 animate = false
-                systemUiController.setStatusBarColor(color = LoginBackground, darkIcons = false)
+
             },
             label = {
                 Text(

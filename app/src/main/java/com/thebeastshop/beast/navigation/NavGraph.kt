@@ -1,6 +1,7 @@
 package com.thebeastshop.beast.navigation
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -12,47 +13,55 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.thebeastshop.beast.theme.AppThemeState
+import com.thebeastshop.beast.theme.SystemUiController
+import com.thebeastshop.beast.ui.launchscreens.Launch
+import com.thebeastshop.beast.ui.wigdets.BaseView
 import com.thebeastshop.beast.ui.wigdets.MainAppContent
 
 object MainDestinations {
     const val HOME = "home"
     const val ADVERTISEMENT = "advertisement"
     const val VIDEO = "video"
+    const val LAUNCH = "launch"
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NavGraph(
     modifier: Modifier = Modifier,
     finishActivity: () -> Unit = {},
     navController: NavHostController = rememberNavController(),
     startDestination: String = MainDestinations.HOME,
-    showOnboardingInitially: Boolean = true
+    showOnboardingInitially: Boolean = true,
+    systemUiController: SystemUiController
 ) {
-    val onboardingComplete = remember(showOnboardingInitially) {
-        mutableStateOf(!showOnboardingInitially)
-    }
-
-    val actions = remember(navController) { MainActions(navController) }
-
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(MainDestinations.HOME) {
+        composable(MainDestinations.LAUNCH) {
             BackHandler {
                 finishActivity()
             }
+            Launch(remember { mutableStateOf(AppThemeState()) })
         }
+
         navigation(
             route = MainDestinations.HOME,
-            startDestination = MainDestinations.VIDEO
+            startDestination = MainDestinations.LAUNCH
         ) {
 
+
         }
+
         composable(
             MainDestinations.HOME,
         ) { backStackEntry: NavBackStackEntry ->
-          //  val arguments = requireNotNull(backStackEntry.arguments)
+            val appTheme = remember { mutableStateOf(AppThemeState()) }
+            BaseView(appTheme.value, systemUiController) {
+                MainAppContent(appTheme)
+            }
         }
     }
 }
@@ -79,7 +88,13 @@ class MainActions(navController: NavHostController) {
             navController.navigate(MainDestinations.HOME)
         }
     }
-}
 
-private fun NavBackStackEntry.lifecycleIsResumed() =
-    this.lifecycle.currentState == Lifecycle.State.RESUMED
+    val launch: (from: NavBackStackEntry) -> Unit = { from ->
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MainDestinations.LAUNCH)
+        }
+    }
+
+    private fun NavBackStackEntry.lifecycleIsResumed() =
+        this.lifecycle.currentState == Lifecycle.State.RESUMED
+}

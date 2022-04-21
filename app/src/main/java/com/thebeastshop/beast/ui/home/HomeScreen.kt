@@ -103,7 +103,6 @@ private fun ChangeColorIconButton(
             as android.view.accessibility.AccessibilityManager
     IconButton(onClick = {
         if (accessibilityManager.isEnabled && accessibilityManager.isTouchExplorationEnabled) {
-            //Showing modal bottom sheet instead when user use a screen reader (otherwise it's not accessible)
             coroutineScope.launch {
                 chooseColorBottomModalState.show()
             }
@@ -179,6 +178,15 @@ fun PalletMenu(
         ) {
             MenuItem(green500, "Green") {
                 onPalletChange.invoke(ColorPallet.GREEN)
+            }
+            MenuItem(purple, "Purple") {
+                onPalletChange.invoke(ColorPallet.PURPLE)
+            }
+            MenuItem(orange500, "Orange") {
+                onPalletChange.invoke(ColorPallet.ORANGE)
+            }
+            MenuItem(blue500, "Blue") {
+                onPalletChange.invoke(ColorPallet.BLUE)
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

@@ -24,10 +24,11 @@ import androidx.compose.ui.unit.dp
 import com.thebeastshop.beast.data.DemoDataProvider
 import com.thebeastshop.beast.data.StoryItem
 import com.thebeastshop.beast.data.StoryList
+import com.thebeastshop.beast.theme.AppThemeState
+import com.thebeastshop.beast.theme.SystemUiController
 import com.thebeastshop.beast.ui.components.VerticalGrid
 import com.thebeastshop.beast.ui.home.lists.*
-import com.thebeastshop.beast.ui.theme.BeastTheme
-import com.thebeastshop.beast.ui.theme.ComposeCookBookMaterial3Theme
+import com.thebeastshop.beast.ui.theme.*
 import java.util.*
 
 class SettingsActivity : ComponentActivity() {
@@ -62,8 +63,16 @@ class SettingsActivity : ComponentActivity() {
 }
 
 @Composable
-fun BaseView(isDarkTheme: Boolean, content: @Composable () -> Unit) {
-    ComposeCookBookMaterial3Theme(isDarkTheme) {
+fun BaseView(appThemeState: AppThemeState, systemUiController: SystemUiController?, content: @Composable () -> Unit) {
+    val color = when (appThemeState.pallet) {
+        ColorPallet.GREEN -> green700
+        ColorPallet.BLUE -> blue700
+        ColorPallet.ORANGE -> orange700
+        ColorPallet.PURPLE -> purple700
+        else -> green700
+    }
+    ComposeCookBookMaterial3Theme(darkTheme = appThemeState.darkTheme, colorPallet = appThemeState.pallet) {
+        systemUiController?.setStatusBarColor(color = MaterialTheme.colorScheme.onPrimaryContainer, darkIcons = appThemeState.darkTheme)
         content()
     }
 }

@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.primarySurface
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -32,17 +34,19 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BeastTheme {
-
-
                 val systemUiController = remember { SystemUiController(window) }
                 val appTheme = remember { mutableStateOf(AppThemeState()) }
                 val navController = rememberNavController()
-                BaseView(appTheme.value, systemUiController) {
-//                    MainAppContent(appTheme,systemUiController)
-                    NavGraph(
-                        navController = navController
-                    )
 
+                androidx.compose.material.Scaffold(
+                    backgroundColor = MaterialTheme.colors.primarySurface,
+                    bottomBar = {  }
+                ) { innerPaddingModifier ->
+                    NavGraph(
+                        systemUiController = systemUiController,
+                        navController = navController,
+
+                    )
                 }
             }
         }
