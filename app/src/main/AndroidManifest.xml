@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Beast">
         <activity
+            android:name=".ui.social.socialDetails.SocialActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.settings.SettingsActivity"
             android:exported="false" />
         <activity

@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -26,6 +27,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.thebeastshop.beast.navigation.BottomNavType
 import com.thebeastshop.beast.theme.AppThemeState
 import com.thebeastshop.beast.theme.LoginBackground
@@ -58,7 +60,7 @@ fun BaseView(
         darkTheme = appThemeState.darkTheme,
         colorPallet = appThemeState.pallet
     ) {
-        systemUiController?.setStatusBarColor(color = MaterialTheme.colorScheme.onPrimaryContainer, darkIcons = appThemeState.darkTheme)
+        systemUiController?.setStatusBarColor(color = Color.White, darkIcons = true)
         content()
     }
 }
@@ -319,7 +321,7 @@ fun HomeScreenContent(
                 when (screen) {
                     BottomNavType.HOME -> HomeScreen(appThemeState, chooseColorBottomModalState)
                     BottomNavType.WIDGETS -> CategoryScreen(appThemeState.value.darkTheme)
-                    BottomNavType.ANIMATION -> SocialScreen(appThemeState.value.darkTheme)
+                    BottomNavType.ANIMATION -> SocialScreen(appThemeState.value.darkTheme, viewModel = hiltViewModel())
                     BottomNavType.DEMOUI -> ShopsScreen(appThemeState.value.darkTheme)
                     BottomNavType.TEMPLATE -> MyScreen(appThemeState.value.darkTheme)
                 }

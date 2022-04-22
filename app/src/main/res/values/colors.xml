@@ -16,4 +16,6 @@
 
 
     <color name="login_background">#FFC7BEB7</color>
+    <color name="login_buttom_background">#FFF3C89E</color>
+
 </resources>

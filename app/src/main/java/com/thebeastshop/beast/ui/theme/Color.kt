@@ -34,7 +34,16 @@ val blue = Color(0xFF5851DB)
 val orange = Color(0xFFF56040)
 val yellow = Color(0xFFFCAF45)
 val graySurface = Color(0xFF2A2A2A)
+
+
+val login_background = Color(0xFFC7BEB7)
+
+val login_buttom_background = Color(0xFFF3C89E)
+
+
 val gradientGreenColors = listOf(green200, green500, green700)
 val gradientRedColors = listOf(orange, tiktokRed)
 val gradientBluePurple = listOf(blue, purple)
 val instagramGradient = listOf(blue, purple, orange, yellow)
+
+

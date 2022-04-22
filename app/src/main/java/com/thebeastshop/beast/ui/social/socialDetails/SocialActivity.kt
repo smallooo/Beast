@@ -1,4 +1,4 @@
-package com.thebeastshop.beast.ui.settings
+package com.thebeastshop.beast.ui.social.socialDetails
 
 import android.content.Context
 import android.content.Intent
@@ -19,19 +19,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.thebeastshop.beast.data.DemoDataProvider
 import com.thebeastshop.beast.data.StoryItem
 import com.thebeastshop.beast.data.StoryList
-import com.thebeastshop.beast.theme.AppThemeState
-import com.thebeastshop.beast.theme.SystemUiController
 import com.thebeastshop.beast.ui.components.VerticalGrid
 import com.thebeastshop.beast.ui.home.lists.*
-import com.thebeastshop.beast.ui.theme.*
+import com.thebeastshop.beast.ui.settings.SettingsActivity
 import java.util.*
 
-class SettingsActivity : ComponentActivity() {
+class SocialActivity : ComponentActivity() {
 
     private val listType: String by lazy {
         intent?.getStringExtra(TYPE) ?: ListViewType.VERTICAL.name
@@ -56,7 +53,7 @@ class SettingsActivity : ComponentActivity() {
         const val TYPE = "type"
         const val DARK_THEME = "darkTheme"
         fun newIntent(context: Context, isDarkTheme: Boolean) =
-            Intent(context, SettingsActivity::class.java).apply {
+            Intent(context, SocialActivity::class.java).apply {
                 putExtra(DARK_THEME, isDarkTheme)
             }
     }

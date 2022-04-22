@@ -23,4 +23,12 @@
     <string name="cd_back">Back</string>
     <string name="cd_change_color">Change color</string>
     <string name="cd_dark_theme">Dark Theme</string>
+
+
+    <string name="account_order">全部订单</string>
+    <string name="account_coupon">优惠卡券</string>
+    <string name="account_favorite">我的收藏</string>
+    <string name="account_service">联系客服</string>
+
+    <string name="database">DisneyCompose.db</string>
 </resources>

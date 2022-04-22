@@ -1,57 +1,58 @@
 package com.thebeastshop.beast.ui.social
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
+import android.content.Context
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.thebeastshop.beast.utils.TestTags
+import com.thebeastshop.beast.data.model.MainViewModel
+import com.thebeastshop.beast.data.model.Poster
+import com.thebeastshop.beast.ui.settings.SettingsActivity
 
 @Composable
-fun SocialScreen(darkTheme: Boolean) {
+fun SocialScreen(
+    darkTheme: Boolean,
+    viewModel: MainViewModel
+) {
     val context = LocalContext.current
-    LazyColumn(
-    modifier = Modifier
-    .fillMaxSize()
-    .testTag(TestTags.TEMPLATE_SCREEN_ROOT)
-    ) {
-        items(templates.size) { index ->
-            val template = templates[index]
-            Button(
-                onClick = {
-//                    context.startActivity(TemplatesActivity.newIntent(context, template, darkTheme))
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-            ) {
-                Text(text = template, modifier = Modifier.padding(8.dp))
-            }
-        }
-    }
-
+    val posters: List<Poster> by viewModel.posterList.collectAsState(initial = listOf())
+        PosterDetailsBody(context, posters)
 }
 
+@Composable
+fun PosterDetailsBody(context : Context, posters : List<Poster>) {
+    Column(modifier = Modifier.fillMaxSize()) {
 
-val templates = listOf(
-    "Login",
-    "Profiles",
-    "On-boarding",
-    "Charts",
-    "Adding Payment Card",
-    "Pin Lock/BioMetric",
-    "Empty Screens",
-    "Settings",
-    "Loaders",
-    "Canvas Drawing",
-    "Animations",
-    "Timer",
-    "Clock View",
-    "Cascade Menu",
-)
+        Row() {
+            Column( modifier = Modifier.weight(1f)) {
+
+                Text(text = "热门话题", modifier = Modifier.align(Alignment.Start).padding(12.dp,0.dp,0.dp,0.dp))
+            }
+
+            Column( modifier = Modifier.weight(1f)) {
+                Text("全部话题",
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier.align(Alignment.End).padding(0.dp,0.dp,12.dp,0.dp)
+                        .clickable{
+                            context.startActivity(SettingsActivity.newIntent(context, false)
+                            )
+                        })
+            }
+
+        }
+
+
+//        posters.forEach { poster ->
+//            Text(text = poster.name)
+//        }
+//
+//        Text(text = "123")
+    }
+}
